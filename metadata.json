@@ -1,0 +1,5 @@
+{
+  "name": "GeminiDub Studio",
+  "description": "A smart video dubbing tool powered by Gemini 2.5. Supports Bengali, Chinese, English, Korean to Hindi dubbing with auto-fix transcription.",
+  "requestFramePermissions": []
+}

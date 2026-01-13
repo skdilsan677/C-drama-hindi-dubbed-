@@ -1,87 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My AI Dubbing Player</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GeminiDub Studio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        h1 {
-            color: #4CAF50;
-        }
-        .player-container {
-            background-color: #1e1e1e;
-            width: 90%;
-            max-width: 600px;
-            height: 300px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid #333;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
-        }
-        .controls button {
-            background-color: #6200ea;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            margin: 10px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .controls button:hover {
-            background-color: #3700b3;
-        }
-        #status-text {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #bb86fc;
-        }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: #0f172a; /* Slate 900 */
+        color: #e2e8f0; /* Slate 200 */
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1e293b;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+      }
     </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
 </head>
-<body>
-
-    <h1>🚀 My First Web App (Testing)</h1>
-    <p>Live Dubbing Player Interface</p>
-
-    <div class="player-container">
-        <h2>🎬 Video Screen (C-Drama)</h2>
-    </div>
-
-    <div class="controls">
-        <button onclick="playVideo()">▶ Play Video</button>
-        <button onclick="startDubbing()">🎙 Start Hindi Dubbing</button>
-    </div>
-
-    <p id="status-text">System Status: Ready to start...</p>
-
-    <script>
-        function playVideo() {
-            document.getElementById('status-text').innerText = "Status: Video is playing...";
-            document.querySelector('.player-container h2').innerText = "Playing: The Untamed (Ep 1)";
-        }
-
-        function startDubbing() {
-            document.getElementById('status-text').innerText = "Status: 🟢 AI Engine Active - Translating to Hindi...";
-            alert("Badhai ho! Aapki Website perfectly kaam kar rahi hai!");
-        }
-    </script>
-
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
