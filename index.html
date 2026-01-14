@@ -1,46 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GeminiDub Studio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahul in Beijing - Interactive Story</title>
     <style>
-      body {
-        font-family: 'Inter', sans-serif;
-        background-color: #0f172a; /* Slate 900 */
-        color: #e2e8f0; /* Slate 200 */
-      }
-      /* Custom scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #1e293b;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #475569;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #64748b;
-      }
+        /* --- CSS Styles --- */
+        :root {
+            --primary-color: #d32f2f;
+            --accent-color: #fbc02d;
+            --text-color: #333;
+            --bg-color: #fffbf0;
+            --card-bg: #ffffff;
+            --hover-blue: #e3f2fd;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        header {
+            background: linear-gradient(135deg, #d32f2f, #b71c1c);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        h1 { margin: 0 0 10px 0; font-size: 2rem; }
+        header p { margin: 0; opacity: 0.9; font-size: 1.1rem; }
+
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            gap: 40px;
+            align-items: flex-start;
+        }
+
+        /* --- Story Section --- */
+        .story-section {
+            flex: 2;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            min-width: 300px;
+        }
+
+        h2 {
+            border-bottom: 3px solid var(--accent-color);
+            display: inline-block;
+            padding-bottom: 8px;
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        /* --- Interactive Text Rows --- */
+        .story-text {
+            cursor: pointer;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border-left: 5px solid transparent;
+            background-color: #fff;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            font-size: 1.1rem;
+        }
+
+        .story-text:hover {
+            background-color: var(--hover-blue);
+            border-left: 5px solid #2196f3;
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .story-text::before {
+            content: '🔊';
+            margin-right: 12px;
+            opacity: 0.3;
+            font-size: 1.2rem;
+            transition: opacity 0.3s;
+        }
+
+        .story-text:hover::before {
+            opacity: 1;
+        }
+
+        /* --- Mandarin Words (Red Highlights) --- */
+        .mandarin {
+            color: #c0392b;
+            font-weight: 700;
+            background-color: #fadbd8;
+            padding: 2px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            border-bottom: 2px dashed #c0392b;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .mandarin:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-bottom: 2px solid transparent;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.3);
+        }
+
+        /* --- Sidebar (Sticky) --- */
+        .sidebar {
+            flex: 1;
+            min-width: 300px;
+            position: sticky;
+            top: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            border-top: 8px solid var(--accent-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            margin-bottom: 30px; /* Space for Ad below card */
+        }
+
+        .card h3 {
+            color: #888;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0;
+        }
+
+        #word-display { 
+            font-size: 2.5rem; 
+            color: var(--primary-color); 
+            margin: 10px 0;
+            line-height: 1.2;
+        }
+
+        #pronunciation { 
+            font-style: italic; 
+            color: #555; 
+            font-size: 1.2rem;
+            background: #f5f5f5;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        #meaning-display { 
+            font-size: 1.2rem; 
+            color: #333;
+            text-align: left;
+            background: #fffbf0;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ffe0b2;
+        }
+
+        .breakdown-label {
+            font-weight: bold;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* --- ADVERTISEMENT STYLES --- */
+        .ad-container {
+            background-color: #eee;
+            border: 1px dashed #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        
+        .ad-label {
+            color: #999;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            text-align: center;
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 850px) {
+            .container { flex-direction: column-reverse; }
+            .story-section, .sidebar { width: 100%; flex: none; box-sizing: border-box; }
+            .sidebar { position: static; }
+        }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.35.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 </head>
-  <body>
-    <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+<body>
+
+    <header>
+        <h1>🐼 Rahul ki Beijing Yatra</h1>
+        <p>Sentence par click karein aur Hindi mein matlab suniye!</p>
+    </header>
+
+    <div class="container">
+        
+        <div class="story-section">
+            <div class="chapter">
+                <h2>Chapter 1: The Arrival</h2>
+                
+                <p class="story-text" onclick="speakStory(this.innerText)">
+                    Rahul jab Beijing airport par utra, toh wo thoda ghabraya hua tha. Sabse pehle wo taxi stand par gaya.
+                </p>
+
+                <p class="story-text" onclick="speakStory('Rahul ne himmat karke bola: Nǐ hǎo! Jiska matlab hai, Namaste.')">
+                    Rahul ne himmat karke bola: 
+                    <span class="mandarin" onclick="event.stopPropagation(); updateCard('Nǐ hǎo (你好)', 'नी-हाओ', '👋 Hello / Namaste', '你好')">"Nǐ hǎo!"</span>
+                </p>
+
+                <span class="ad-label">Advertisement</span>
+                <div class="ad-container" style="min-height: 100px;">
+                    <p style="color:#888;">(Ad Space 1)</p>
+                </div>
+
+                <p class="story-text" onclick="speakStory(this.innerText)">
+                    Driver khush ho gaya aur usne bhi jawab diya, "Nǐ hǎo!"
+                </p>
+                
+                <p class="story-text" onclick="speakStory('Raaste mein Rahul ko bhook lagi. Wo menu par ungli rakh kar bola: Zhège. Yani, Yeh wala.')">
+                    Raaste mein Rahul ko bhook lagi. Wo menu par ungli rakh kar bola: 
+                    <span class="mandarin" onclick="event.stopPropagation(); updateCard('Zhège (这个)', 'जे-ge', '👉 Yeh wala (This one)', '这个')">"Zhège"</span>
+                </p>
+                
+                <p class="story-text" onclick="speakStory('Khana khane ke baad, Rahul ne paani manga aur jhuk kar kaha: Xièxiè. Yani, Dhanyavaad.')">
+                    Khana khane ke baad, Rahul ne paani manga aur jhuk kar kaha: 
+                    <span class="mandarin" onclick="event.stopPropagation(); updateCard('Xièxiè (谢谢)', 'शिए-शिए', '🙏 Dhanyavaad (Thank you)', '谢谢')">"Xièxiè"</span>
+                </p>
+
+                <p class="story-text" onclick="speakStory('Dukaan wale ne haste hue kaha, Bù kèqì. Jiska matlab hai, Koi baat nahi, ya You are welcome.')">
+                    Dukaan wale ne haste hue kaha: 
+                    <span class="mandarin" onclick="event.stopPropagation(); updateCard('Bù kèqì (不客气)', 'Bu-kh-chi', '😊 <b>Koi baat nahi</b><br><br><span class=\'breakdown-label\'>Breakdown:</span>Bù (Nahi) + Kèqì (Polite)<br><i>Lit: Itna polite hone ki zarurat nahi hai.</i>', '不客气')">"Bù kèqì"</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="card">
+                <h3>Vocabulary Card</h3>
+                <h1 id="word-display">...</h1>
+                <p id="pronunciation">Shabd par click karein</p>
+                <div id="meaning-display">
+                    Yahan shabd ka matlab dikhega.
+                </div>
+            </div>
+
+            <span class="ad-label">Sponsored</span>
+            <div class="ad-container" style="min-height: 250px;">
+                <p style="color:#888;">(Ad Space 2 - 300x250)</p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const synth = window.speechSynthesis;
+
+        function cleanText(text) {
+            let clean = text.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '')
+                       .replace('🔊', '')
+                       .trim();
+            return clean;
+        }
+
+        // --- 1. Function to Speak Story in Hindi ---
+        function speakStory(textToSpeak) {
+            synth.cancel(); 
+            // Agar text element se aa raha hai toh clean karo, agar direct string hai toh waise hi bolo
+            const cleanSpokenText = cleanText(textToSpeak);
+            
+            const utterance = new SpeechSynthesisUtterance(cleanSpokenText);
+            utterance.lang = 'hi-IN'; // Hindi Voice
+            utterance.rate = 1; 
+            utterance.pitch = 1;
+            synth.speak(utterance);
+        }
+
+        // --- 2. Update Card UI ---
+        function updateCard(displayWord, sound, meaningHTML, speakText) {
+            document.getElementById('word-display').innerText = displayWord;
+            document.getElementById('pronunciation').innerText = "Bolna: " + sound;
+            document.getElementById('meaning-display').innerHTML = meaningHTML;
+            
+            const card = document.querySelector('.card');
+            card.style.transform = "scale(1.02)";
+            setTimeout(() => card.style.transform = "scale(1)", 200);
+
+            speakChinese(speakText);
+        }
+
+        // --- 3. Speak Chinese ---
+        function speakChinese(text) {
+            synth.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            const voices = synth.getVoices();
+            const zhVoice = voices.find(v => v.lang.includes('zh'));
+            if(zhVoice) utterance.voice = zhVoice;
+
+            utterance.lang = 'zh-CN'; 
+            utterance.rate = 0.8; 
+            synth.speak(utterance);
+        }
+    </script>
+
 </body>
 </html>
